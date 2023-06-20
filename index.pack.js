@@ -504,23 +504,58 @@ if (process.env.NODE_ENV === 'production') {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 exports.default = App;
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Die = __webpack_require__(19);
+
+var _Die2 = _interopRequireDefault(_Die);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
+  var _React$useState = _react2.default.useState(allNewDice()),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      dice = _React$useState2[0],
+      setDice = _React$useState2[1];
+
+  function allNewDice() {
+    var newDice = [];
+
+    for (var i = 0; i < 10; i++) {
+      var randomNumber = Math.ceil(Math.random() * 6);
+      newDice.push(randomNumber);
+    }
+
+    return newDice;
+  }
+
+  function roll() {
+    setDice(allNewDice());
+  }
+
+  var diceEl = dice.map(function (die) {
+    return _react2.default.createElement(_Die2.default, { value: die });
+  });
 
   return _react2.default.createElement(
     'main',
     null,
     _react2.default.createElement(
-      'h1',
-      null,
-      'Tenzies'
+      'div',
+      { className: 'dice-container' },
+      diceEl
+    ),
+    _react2.default.createElement(
+      'button',
+      { className: 'roll-dice', onClick: roll },
+      'ROLL'
     )
   );
 }
@@ -29173,6 +29208,38 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Die;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Die(_ref) {
+  var value = _ref.value;
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'die-face' },
+    _react2.default.createElement(
+      'h2',
+      { className: 'die-num' },
+      value
+    )
+  );
+}
 
 /***/ })
 /******/ ]);
