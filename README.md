@@ -1,11 +1,11 @@
-# co0a9459ea14580c07f072cfd
+# Tenzies
 
 Quick start:
 
 ```
 $ yarn # npm install
 $ yarn build # npm run build
-````
+```
 
 ## Development
 
@@ -26,4 +26,5 @@ The Frontend Developer Career Path aims to teach you everything you need to beco
 - [Become a Scrimba Pro member](https://scrimba.com/pricing)
 
 Happy Coding!
+
 # Tenzies
