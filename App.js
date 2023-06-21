@@ -1,15 +1,16 @@
-import React from 'react';
-import Die from './Die';
+import React, { useState, useEffect } from 'react';
+import Die from './components/Die';
 import { nanoid } from 'nanoid';
 import Confetti from 'react-confetti';
+import Header from './components/Header';
 
 export default function App() {
-  const [dice, setDice] = React.useState(allNewDice());
-  const [tenzies, setTenzies] = React.useState(false);
-  const [numOfRolls, setNumOfRolls] = React.useState(1);
-  const [lowestRolls, setLowestRolls] = React.useState(localStorage.getItem('lowestRolls') || 0);
+  const [dice, setDice] = useState(allNewDice());
+  const [tenzies, setTenzies] = useState(false);
+  const [numOfRolls, setNumOfRolls] = useState(1);
+  const [lowestRolls, setLowestRolls] = useState(localStorage.getItem('lowestRolls') || 0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const allHeld = dice.every(die => die.isHeld);
     const allSame = dice.every(die => die.value === dice[0].value);
 
@@ -70,12 +71,14 @@ export default function App() {
 
   return (
     <main>
-      <h3>{`LOWEST ROLLS: ${lowestRolls}`}</h3>
-      <h3>{`ROLLS: ${numOfRolls}`}</h3>
-      {tenzies && <Confetti/>}
-    <h1 className="title">Tenzies</h1>
-    <p className="instructions">Roll until all dice are the same. Click each die 
-    to freeze it at its current value between rolls.</p>
+      <Header
+        numOfRolls={numOfRolls}
+        lowestRolls={lowestRolls}
+      />
+      {tenzies && <Confetti />}
+      <h1 className="title">Tenzies</h1>
+      <p className="instructions">Roll until all dice are the same. Click each die 
+      to freeze it at its current value between rolls.</p>
       <div className='dice-container'>
         {diceElements}
       </div>
