@@ -29492,16 +29492,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function Header(_ref) {
   var lowestRolls = _ref.lowestRolls,
-      numOfRolls = _ref.numOfRolls;
+      numOfRolls = _ref.numOfRolls,
+      bestTime = _ref.bestTime;
 
 
   return _react2.default.createElement(
     'div',
     { className: 'header' },
     _react2.default.createElement(
-      'h3',
-      null,
-      'LOWEST ROLLS: ' + lowestRolls
+      'div',
+      { className: 'best' },
+      _react2.default.createElement(
+        'h3',
+        null,
+        'LOWEST ROLLS: ' + lowestRolls
+      ),
+      _react2.default.createElement(
+        'h3',
+        null,
+        'BEST TIME: 01:32'
+      )
     ),
     _react2.default.createElement(_Timer2.default, null),
     _react2.default.createElement(
