@@ -15,16 +15,21 @@ export default function Header({lowestRolls, numOfRolls, storeBestTime, tenzies,
 
   return (
     <div className="header">
+      
       <div className="best">
         <h3>{`LOWEST ROLLS: ${lowestRolls}`}</h3>
         <h3>BEST TIME: {bestTime}</h3>
       </div>
-      <Timer 
-        onValueChange={handleTimer}
-        tenzies={tenzies}
-        startTime={startTime}
-      />
-      <h3>{`ROLLS: ${numOfRolls}`}</h3>
+
+      <div className='score'>
+        <Timer 
+          onValueChange={handleTimer}
+          tenzies={tenzies}
+          startTime={startTime}
+        />
+        <h3>{`ROLLS: ${numOfRolls}`}</h3>
+      </div>
+
     </div>
   )
 }

@@ -29564,15 +29564,19 @@ function Header(_ref) {
         bestTime
       )
     ),
-    _react2.default.createElement(_Timer2.default, {
-      onValueChange: handleTimer,
-      tenzies: tenzies,
-      startTime: startTime
-    }),
     _react2.default.createElement(
-      'h3',
-      null,
-      'ROLLS: ' + numOfRolls
+      'div',
+      { className: 'score' },
+      _react2.default.createElement(_Timer2.default, {
+        onValueChange: handleTimer,
+        tenzies: tenzies,
+        startTime: startTime
+      }),
+      _react2.default.createElement(
+        'h3',
+        null,
+        'ROLLS: ' + numOfRolls
+      )
     )
   );
 }
