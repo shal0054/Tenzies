@@ -6,14 +6,20 @@ import Confetti from 'react-confetti';
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
+  const [numOfRolls, setNumOfRolls] = React.useState(1);
+  const [lowestRolls, setLowestRolls] = React.useState(localStorage.getItem('lowestRolls') || 0);
 
   React.useEffect(() => {
     const allHeld = dice.every(die => die.isHeld);
     const allSame = dice.every(die => die.value === dice[0].value);
 
     if (allHeld && allSame) {
-      setTenzies(true)
-      console.log('YOU WON!!')
+      setTenzies(true);
+      if (numOfRolls < lowestRolls || lowestRolls === 0) {
+        setLowestRolls(numOfRolls);
+        localStorage.setItem('lowestRolls', numOfRolls);
+      }
+      console.log('YOU WON!!');
     }
   }, [dice])
 
@@ -49,6 +55,8 @@ export default function App() {
         Object.assign({}, die, { value : newRoll[i].value });
         });
       });
+
+      setNumOfRolls(prev => prev + 1);
     }
     
   const diceElements = dice.map(die => (
@@ -62,6 +70,8 @@ export default function App() {
 
   return (
     <main>
+      <h3>{`LOWEST ROLLS: ${lowestRolls}`}</h3>
+      <h3>{`ROLLS: ${numOfRolls}`}</h3>
       {tenzies && <Confetti/>}
     <h1 className="title">Tenzies</h1>
     <p className="instructions">Roll until all dice are the same. Click each die 

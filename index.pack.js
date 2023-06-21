@@ -536,6 +536,16 @@ function App() {
       tenzies = _React$useState4[0],
       setTenzies = _React$useState4[1];
 
+  var _React$useState5 = _react2.default.useState(1),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      numOfRolls = _React$useState6[0],
+      setNumOfRolls = _React$useState6[1];
+
+  var _React$useState7 = _react2.default.useState(localStorage.getItem('lowestRolls') || 0),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      lowestRolls = _React$useState8[0],
+      setLowestRolls = _React$useState8[1];
+
   _react2.default.useEffect(function () {
     var allHeld = dice.every(function (die) {
       return die.isHeld;
@@ -546,6 +556,10 @@ function App() {
 
     if (allHeld && allSame) {
       setTenzies(true);
+      if (numOfRolls < lowestRolls || lowestRolls === 0) {
+        setLowestRolls(numOfRolls);
+        localStorage.setItem('lowestRolls', numOfRolls);
+      }
       console.log('YOU WON!!');
     }
   }, [dice]);
@@ -580,6 +594,10 @@ function App() {
         return die.isHeld ? die : Object.assign({}, die, { value: newRoll[i].value });
       });
     });
+
+    setNumOfRolls(function (prev) {
+      return prev + 1;
+    });
   }
 
   var diceElements = dice.map(function (die) {
@@ -596,6 +614,16 @@ function App() {
   return _react2.default.createElement(
     'main',
     null,
+    _react2.default.createElement(
+      'h3',
+      null,
+      'LOWEST ROLLS: ' + lowestRolls
+    ),
+    _react2.default.createElement(
+      'h3',
+      null,
+      'ROLLS: ' + numOfRolls
+    ),
     tenzies && _react2.default.createElement(_reactConfetti2.default, null),
     _react2.default.createElement(
       'h1',
