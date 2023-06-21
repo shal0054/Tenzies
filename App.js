@@ -9,6 +9,7 @@ export default function App() {
   const [tenzies, setTenzies] = useState(false);
   const [numOfRolls, setNumOfRolls] = useState(1);
   const [lowestRolls, setLowestRolls] = useState(localStorage.getItem('lowestRolls') || 0);
+  const [startTime, setStartTime] = useState(false);
 
   useEffect(() => {
     const allHeld = dice.every(die => die.isHeld);
@@ -25,11 +26,13 @@ export default function App() {
   }, [dice])
 
   function holdDice(id) {
-    setDice(oldDice => {
-      return oldDice.map(die => {
-        return die.id === id ? Object.assign({}, die, { isHeld: !die.isHeld }) : die;
+    if (startTime) {
+      setDice(oldDice => {
+        return oldDice.map(die => {
+          return die.id === id ? Object.assign({}, die, { isHeld: !die.isHeld }) : die;
+        });
       });
-    });
+    }
   }
 
   function allNewDice() {
@@ -69,11 +72,18 @@ export default function App() {
       />
   ));
 
+  function storeBestTime(value) {
+    localStorage.setItem('bestTime', value);
+  }
+
   return (
     <main>
       <Header
         numOfRolls={numOfRolls}
         lowestRolls={lowestRolls}
+        storeBestTime={storeBestTime}
+        tenzies={tenzies}
+        startTime={startTime}
       />
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
@@ -82,8 +92,13 @@ export default function App() {
       <div className='dice-container'>
         {diceElements}
       </div>
-      {!tenzies && <button className='roll-dice' onClick={roll}>ROLL</button>}
-      {tenzies && <button className='roll-dice' onClick={() => location.reload()}>NEW GAME</button>}
+      {(tenzies && startTime) && 
+        <button className='roll-dice' onClick={() => location.reload()}>NEW GAME</button>}
+
+      {(!startTime && !tenzies) &&
+        <button className='startBtn' onClick={() => setStartTime(prev => !prev)}>START</button>}
+
+      {(startTime && !tenzies) && <button className='roll-dice' onClick={roll}>ROLL</button>}
     </main>
   )
 }

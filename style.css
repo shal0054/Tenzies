@@ -1,9 +1,10 @@
 * {
     box-sizing: border-box;
+    
 }
 
 body {
-    margin: 0;
+    margin: auto;
     background-color: #0B2434;
     font-family: 'Karla', sans-serif;
 }
@@ -18,14 +19,24 @@ main {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    margin: auto;
+    margin-top: 2rem;
 }
 
 .header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
   }
+
+.timer {
+    font-size: 1.5rem;
+}
+
+.header h3 {
+    padding: 1% 0%;
+}
 
 .title {
     font-size: 40px;
@@ -59,6 +70,14 @@ main {
 
 .die-num {
     font-size: 2rem;
+}
+
+.startBtn {
+    height: 50px;
+    width: 100px;
+    background-color: rgb(21, 187, 21);
+    font-size: 1.2rem;
+    font-family: 'Karla', sans-serif;
 }
 
 .roll-dice {

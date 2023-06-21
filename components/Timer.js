@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Timer() {
+export default function Timer({onValueChange, tenzies, startTime}) {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (seconds < 59) {
-        setSeconds(seconds + 1);
-      } else {
-        setSeconds(0);
-        setMinutes(minutes + 1);
-      }
-    }, 1000);
+    let timer;
+    if (!tenzies && startTime) {
+      timer = setInterval(() => {
+        if (seconds < 59) {
+          setSeconds(seconds + 1);
+        } else {
+          setSeconds(0);
+          setMinutes(minutes + 1);
+        }
+      }, 1000);
+    }
+
+    onValueChange(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`)
 
     return () => clearInterval(timer);
-  }, [minutes, seconds]);
+  }, [minutes, seconds, startTime]);
 
   return (
     <div>
-      <p>{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</p>
+      <p className='timer'>
+        {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+      </p>
     </div>
   );
 }

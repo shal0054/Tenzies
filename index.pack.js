@@ -550,6 +550,11 @@ function App() {
       lowestRolls = _useState8[0],
       setLowestRolls = _useState8[1];
 
+  var _useState9 = (0, _react.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      startTime = _useState10[0],
+      setStartTime = _useState10[1];
+
   (0, _react.useEffect)(function () {
     var allHeld = dice.every(function (die) {
       return die.isHeld;
@@ -569,11 +574,13 @@ function App() {
   }, [dice]);
 
   function _holdDice(id) {
-    setDice(function (oldDice) {
-      return oldDice.map(function (die) {
-        return die.id === id ? Object.assign({}, die, { isHeld: !die.isHeld }) : die;
+    if (startTime) {
+      setDice(function (oldDice) {
+        return oldDice.map(function (die) {
+          return die.id === id ? Object.assign({}, die, { isHeld: !die.isHeld }) : die;
+        });
       });
-    });
+    }
   }
 
   function allNewDice() {
@@ -615,12 +622,19 @@ function App() {
     });
   });
 
+  function storeBestTime(value) {
+    localStorage.setItem('bestTime', value);
+  }
+
   return _react2.default.createElement(
     'main',
     null,
     _react2.default.createElement(_Header2.default, {
       numOfRolls: numOfRolls,
-      lowestRolls: lowestRolls
+      lowestRolls: lowestRolls,
+      storeBestTime: storeBestTime,
+      tenzies: tenzies,
+      startTime: startTime
     }),
     tenzies && _react2.default.createElement(_reactConfetti2.default, null),
     _react2.default.createElement(
@@ -638,17 +652,26 @@ function App() {
       { className: 'dice-container' },
       diceElements
     ),
-    !tenzies && _react2.default.createElement(
-      'button',
-      { className: 'roll-dice', onClick: roll },
-      'ROLL'
-    ),
-    tenzies && _react2.default.createElement(
+    tenzies && startTime && _react2.default.createElement(
       'button',
       { className: 'roll-dice', onClick: function onClick() {
           return location.reload();
         } },
       'NEW GAME'
+    ),
+    !startTime && !tenzies && _react2.default.createElement(
+      'button',
+      { className: 'startBtn', onClick: function onClick() {
+          return setStartTime(function (prev) {
+            return !prev;
+          });
+        } },
+      'START'
+    ),
+    startTime && !tenzies && _react2.default.createElement(
+      'button',
+      { className: 'roll-dice', onClick: roll },
+      'ROLL'
     )
   );
 }
@@ -29429,7 +29452,11 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Timer() {
+function Timer(_ref) {
+  var onValueChange = _ref.onValueChange,
+      tenzies = _ref.tenzies,
+      startTime = _ref.startTime;
+
   var _useState = (0, _react.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
       minutes = _useState2[0],
@@ -29441,26 +29468,31 @@ function Timer() {
       setSeconds = _useState4[1];
 
   (0, _react.useEffect)(function () {
-    var timer = setInterval(function () {
-      if (seconds < 59) {
-        setSeconds(seconds + 1);
-      } else {
-        setSeconds(0);
-        setMinutes(minutes + 1);
-      }
-    }, 1000);
+    var timer = void 0;
+    if (!tenzies && startTime) {
+      timer = setInterval(function () {
+        if (seconds < 59) {
+          setSeconds(seconds + 1);
+        } else {
+          setSeconds(0);
+          setMinutes(minutes + 1);
+        }
+      }, 1000);
+    }
+
+    onValueChange(minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0'));
 
     return function () {
       return clearInterval(timer);
     };
-  }, [minutes, seconds]);
+  }, [minutes, seconds, startTime]);
 
   return _react2.default.createElement(
     'div',
     null,
     _react2.default.createElement(
       'p',
-      null,
+      { className: 'timer' },
       minutes.toString().padStart(2, '0'),
       ':',
       seconds.toString().padStart(2, '0')
@@ -29478,6 +29510,9 @@ function Timer() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 exports.default = Header;
 
 var _react = __webpack_require__(1);
@@ -29493,8 +29528,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Header(_ref) {
   var lowestRolls = _ref.lowestRolls,
       numOfRolls = _ref.numOfRolls,
-      bestTime = _ref.bestTime;
+      storeBestTime = _ref.storeBestTime,
+      tenzies = _ref.tenzies,
+      startTime = _ref.startTime;
 
+  var _useState = (0, _react.useState)(localStorage.getItem('bestTime') || '00:00'),
+      _useState2 = _slicedToArray(_useState, 2),
+      bestTime = _useState2[0],
+      setBestTime = _useState2[1];
+
+  function handleTimer(value) {
+    if (tenzies) {
+      if (value < bestTime || bestTime === '00:00') {
+        setBestTime(value);
+        storeBestTime(value);
+      }
+    }
+  }
 
   return _react2.default.createElement(
     'div',
@@ -29510,10 +29560,15 @@ function Header(_ref) {
       _react2.default.createElement(
         'h3',
         null,
-        'BEST TIME: 01:32'
+        'BEST TIME: ',
+        bestTime
       )
     ),
-    _react2.default.createElement(_Timer2.default, null),
+    _react2.default.createElement(_Timer2.default, {
+      onValueChange: handleTimer,
+      tenzies: tenzies,
+      startTime: startTime
+    }),
     _react2.default.createElement(
       'h3',
       null,
