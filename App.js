@@ -4,6 +4,17 @@ import { nanoid } from 'nanoid';
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
+  const [tenzies, setTenzies] = React.useState(false);
+
+  React.useEffect(() => {
+    const allHeld = dice.every(die => die.isHeld);
+    const allSame = dice.every(die => die.value === dice[0].value);
+
+    if (allHeld && allSame) {
+      setTenzies(true)
+      console.log('YOU WON!!')
+    }
+  }, [dice])
 
   function holdDice(id) {
     setDice(oldDice => {
@@ -32,7 +43,9 @@ export default function App() {
     const newRoll = allNewDice();
     setDice(oldDice => {
       return oldDice.map((die, i) => {
-        return die.isHeld ? die : Object.assign({}, die, { value : newRoll[i].value });
+        return die.isHeld ? 
+        die : 
+        Object.assign({}, die, { value : newRoll[i].value });
         });
       });
     }
@@ -48,6 +61,9 @@ export default function App() {
 
   return (
     <main>
+    <h1 className="title">Tenzies</h1>
+    <p className="instructions">Roll until all dice are the same. Click each die 
+    to freeze it at its current value between rolls.</p>
       <div className='dice-container'>
         {diceElements}
       </div>

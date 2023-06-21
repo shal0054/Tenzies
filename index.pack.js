@@ -527,6 +527,25 @@ function App() {
       dice = _React$useState2[0],
       setDice = _React$useState2[1];
 
+  var _React$useState3 = _react2.default.useState(false),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      tenzies = _React$useState4[0],
+      setTenzies = _React$useState4[1];
+
+  _react2.default.useEffect(function () {
+    var allHeld = dice.every(function (die) {
+      return die.isHeld;
+    });
+    var allSame = dice.every(function (die) {
+      return die.value === dice[0].value;
+    });
+
+    if (allHeld && allSame) {
+      setTenzies(true);
+      console.log('YOU WON!!');
+    }
+  }, [dice]);
+
   function _holdDice(id) {
     setDice(function (oldDice) {
       return oldDice.map(function (die) {
@@ -573,6 +592,16 @@ function App() {
   return _react2.default.createElement(
     'main',
     null,
+    _react2.default.createElement(
+      'h1',
+      { className: 'title' },
+      'Tenzies'
+    ),
+    _react2.default.createElement(
+      'p',
+      { className: 'instructions' },
+      'Roll until all dice are the same. Click each die to freeze it at its current value between rolls.'
+    ),
     _react2.default.createElement(
       'div',
       { className: 'dice-container' },
