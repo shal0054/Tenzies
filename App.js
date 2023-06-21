@@ -67,7 +67,8 @@ export default function App() {
       <div className='dice-container'>
         {diceElements}
       </div>
-      <button className='roll-dice' onClick={roll}>ROLL</button>
+      {!tenzies && <button className='roll-dice' onClick={roll}>ROLL</button>}
+      {tenzies && <button className='roll-dice' onClick={() => location.reload()}>NEW GAME</button>}
     </main>
   )
 }

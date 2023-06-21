@@ -607,10 +607,17 @@ function App() {
       { className: 'dice-container' },
       diceElements
     ),
-    _react2.default.createElement(
+    !tenzies && _react2.default.createElement(
       'button',
       { className: 'roll-dice', onClick: roll },
       'ROLL'
+    ),
+    tenzies && _react2.default.createElement(
+      'button',
+      { className: 'roll-dice', onClick: function onClick() {
+          return location.reload();
+        } },
+      'NEW GAME'
     )
   );
 }
