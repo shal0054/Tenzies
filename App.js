@@ -8,7 +8,7 @@ export default function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
   const [numOfRolls, setNumOfRolls] = useState(1);
-  const [lowestRolls, setLowestRolls] = useState(localStorage.getItem('lowestRolls') || 0);
+  const [lowestRolls, setLowestRolls] = useState(() => localStorage.getItem('lowestRolls') || 0);
   const [startTime, setStartTime] = useState(false);
 
   useEffect(() => {

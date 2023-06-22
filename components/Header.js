@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Timer from './Timer';
 
 export default function Header({lowestRolls, numOfRolls, storeBestTime, tenzies, startTime}) {
-  const [bestTime, setBestTime] = useState(localStorage.getItem('bestTime') || '00:00');
+  const [bestTime, setBestTime] = useState(() => localStorage.getItem('bestTime') || '00:00');
 
   function handleTimer(value) {
     if (tenzies) {
